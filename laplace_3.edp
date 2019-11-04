@@ -1,0 +1,120 @@
+//verbosity 0;
+
+// Trace de l'éxécution dans un fichier
+ofstream tfile("output3/laplace_trace_umfpack.txt");
+// Fichier de sortie sous forme de tableau pour tracé gnuplot ErrL2
+ofstream gfile("output3/laplace_errorsL2_umfpack.txt");
+// Fichier de sortie sous forme de tableau pour tracé gnuplot ErrH1
+ofstream gfile2("output3/laplace_errorsH1_umfpack.txt");
+// Fichier de sortie sous forme de tableau des Min
+ofstream minfile("output3/laplace_min_umfpack.txt");
+// Fichier de sortie sous forme de tableau des Max
+ofstream maxfile("output3/laplace_max_umfpack.txt");
+
+tfile << "Probleme de Laplace" << endl;
+
+gfile << "# Resolution de -Laplacien(u) = f avec u = 0 au bord" << endl;
+gfile << "# sur le carre [0,1]x[0,1] en elements finis P1 Lagrange" << endl;
+gfile << "# sur une suite de maillages" << endl;
+gfile << "# et pour une solution analytique quadratique en x et y" << endl;
+gfile << "# pas h, erreur L^2 relative, erreur relative L^2 sur le gradient, temps CPU" << endl;
+
+gfile2 << "# Resolution de -Laplacien(u) = f avec u = 0 au bord" << endl;
+gfile2 << "# sur le carre [0,1]x[0,1] en elements finis P1 Lagrange" << endl;
+gfile2 << "# sur une suite de maillages" << endl;
+gfile2 << "# et pour une solution analytique quadratique en x et y" << endl;
+gfile2 << "# pas h, erreur H^1 relative, erreur relative H^1 sur le gradient, temps CPU" << endl;
+
+minfile << "# Resolution de -Laplacien(u) = f avec u = 0 au bord" << endl;
+minfile << "# sur le carre [0,1]x[0,1] en elements finis P1 Lagrange" << endl;
+minfile << "# sur une suite de maillages" << endl;
+minfile << "# et pour une solution analytique quadratique en x et y" << endl;
+minfile << "# maillage k, minimum solution approche, minimum solution exacte" << endl;
+
+maxfile << "# Resolution de -Laplacien(u) = f avec u = 0 au bord" << endl;
+maxfile << "# sur le carre [0,1]x[0,1] en elements finis P1 Lagrange" << endl;
+maxfile << "# sur une suite de maillages" << endl;
+maxfile << "# et pour une solution analytique quadratique en x et y" << endl;
+maxfile << "# maillage k, maximum solution approche, maximum solution exacte" << endl;
+
+
+// Définition des bord du domaine de calcul
+border Gamma1(t=0,1) {x=t; y=0;};
+border Gamma2(t=0,1) {x=1; y=t;};
+border Gamma3(t=0,1) {x=1-t; y=1;};
+border Gamma4(t=0,1) {x=0; y=1-t;};
+
+// Boucle sur une famille de maillages de plus en plus fins
+for (int k=0;k<6;++k) // Pour k=7, ça devient trop gros
+  {
+    // Construction du maillage
+    int n = 10*2^k; // Nombre de points par côté
+    real t1 = clock(); // Pour mesure du temps cpu
+    mesh Th = buildmesh(Gamma1(n)+Gamma2(n)+Gamma3(n)+Gamma4(n));
+
+    tfile << "k = " << k << endl;
+    tfile << "  Nombre de sommets par cote : " << n << endl;
+    tfile << "  Nombre de sommets dans le maillage : " << Th.nv << endl;
+    tfile << "  Nombre de triangles dans le maillage : " << Th.nt << endl;
+
+    // Affichage et sortie fichierdu maillage seul
+    //plot(Gamma1(n)+Gamma2(n)+Gamma3(n)+Gamma4(n));
+    //plot(Th, wait=1, ps="laplace.eps");
+
+    // Définition de l'espace de discrétisation. Ici on discrétise
+    // V=H^1_0(\Omega) avec des éléments finis P1-Lagrange
+    fespace Vh(Th,P1);
+    tfile << "  Nombre de degres de liberte : " << Vh.ndof << endl;
+
+    cout << "*** k = " << k << " --> n = " << n << " , #DOf = " << Vh.ndof << " ***" << endl;
+
+    // Définition de la formulation variationnelle dans Vh
+
+    // On a besoin de 2 fonctions u et v dans Vh
+    Vh u,v;
+    // D'une fonction definie de manière analytique (pour le second membre)
+    func f = cos(2*pi*x)*(2 - 4*pi^2*y*(1-y));
+    // Qui s'annule bien au bord du domaine et dont la solution (de
+    // -Laplacien(u)=f) est $u(x,y) = x(1-x)y(1-y).
+
+    // Voici finalement notre problème, avec son solveur linéaire
+    problem laplace(u,v,solver=UMFPACK) = int2d(Th)( dx(u)*dx(v) + dy(u)*dy(v) )
+      - int2d(Th)( f*v ) + on(Gamma1,Gamma3,u=0);
+
+    // Résolution du système linéaire
+    laplace;
+
+    // Visualisation de la solution
+    //plot(u, fill=true,value=true,boundary=true,wait=true);
+
+    // Solution exacte projetee dans Vh
+    Vh ue;
+    ue = cos(2*pi*x)*y*(1-y); // Expression de la solution exacte
+
+    // Calcul des erreurs
+    real normeL2, errL2;
+    normeL2 = sqrt( int2d(Th) ( (ue)^2 ) );
+    errL2 = sqrt( int2d(Th) ( (u-ue)^2 ) );
+
+    real normeH1, errH1;
+    normeH1 = sqrt( int2d(Th) (dx(ue)^2 + dy(ue)^2));
+    errH1 = sqrt( int2d(Th) ( (dx(u)-dx(ue))^2 + (dy(u)-dy(ue))^2));
+
+    real minapp, maxapp, minex, maxex;
+    minapp = u[].min;
+    minex = ue[].min;
+    maxapp = u[].max;
+    maxex = ue[].max;
+
+    real t2 = clock(); // Pour mesure du temps cpu
+
+    tfile << "  Erreur L2 relative : " << errL2/normeL2 << endl;
+    tfile << "  Erreur H_1 relative : " << errH1/normeH1 << endl;
+    tfile << "  Temps CPU total : " << t2-t1 << endl;
+
+    gfile << 1./n << "  " << errL2/normeL2 << "  " << t2-t1 << endl;
+    gfile2 << 1./n << "  " << errH1/normeH1 << "  " << t2-t1 << endl;
+    minfile << k << "  " << minapp << "  " << minex << endl;
+    maxfile << k << "  " << maxapp << "  " << maxex << endl;
+
+  }
