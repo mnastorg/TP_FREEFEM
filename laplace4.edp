@@ -1,0 +1,118 @@
+//verbosity 0;
+
+// Trace de l'éxécution dans un fichier
+ofstream tfile("output/laplace4_trace_umfpack.txt");
+
+// Fichier de sortie sous forme de tableau pour tracé gnuplot
+ofstream gfile("output/laplace4_errors_umfpack.txt");
+
+
+tfile << "Probleme de Laplace" << endl;
+
+gfile << "# Resolution de -Laplacien(u) = f avec u = 0 au bord" << endl;
+gfile << "# sur le carre [0,1]x[0,1] en elements finis P1 Lagrange" << endl;
+gfile << "# sur une suite de maillages" << endl;
+gfile << "# et pour une solution analytique quadratique en x et y" << endl;
+
+gfile << "# pas h, erreur L^2 relative, erreur relative L^2 sur le gradient, temps CPU" << endl;
+
+// Définition des bord du domaine de calcul
+border Gamma1(t=0,1) {x=t; y=0;};
+border Gamma2(t=0,1) {x=1; y=t;};
+border Gamma3(t=0,1) {x=1-t; y=1;};
+border Gamma4(t=0,1) {x=0; y=1-t;};
+
+// Boucle sur une famille de maillages de plus en plus fins
+for (int i=1;i<13;++i) // Pour k=7, ça devient trop gros
+  {
+    real l = i;
+    l = -l;
+    real tolerance = 10^(l);
+    // Construction du maillage
+    int n = 10*2^3; // Nombre de points par côté
+
+    mesh Th = buildmesh(Gamma1(n)+Gamma2(n)+Gamma3(n)+Gamma4(n));
+
+    tfile << "  Tolerance : " << tolerance << endl;
+    tfile << "  Nombre de sommets par cote : " << n << endl;
+    tfile << "  Nombre de sommets dans le maillage : " << Th.nv << endl;
+    tfile << "  Nombre de triangles dans le maillage : " << Th.nt << endl;
+
+    // Affichage et sortie fichierdu maillage seul
+    //plot(Gamma1(n)+Gamma2(n)+Gamma3(n)+Gamma4(n));
+    //plot(Th, wait=1, ps="laplace.eps");
+
+    // Définition de l'espace de discrétisation. Ici on discrétise
+    // V=H^1_0(\Omega) avec des éléments finis P1-Lagrange
+    fespace Vh(Th,P1);
+    tfile << "  Nombre de degres de liberte : " << Vh.ndof << endl;
+
+    cout << "*** Tolerance : " << tolerance << " --> n = " << n << " , #DOf = " << Vh.ndof << " ***" << endl;
+
+    // Définition de la formulation variationnelle dans Vh
+
+    // On a besoin de 2 fonctions u et v dans Vh
+    Vh u1,v1;
+    Vh u2,v2;
+    Vh u3,v3;
+    // D'une fonction definie de manière analytique (pour le second membre)
+    func f = 2*(x*(1-x)+y*(1-y));
+    // Qui s'annule bien au bord du domaine et dont la solution (de
+    // -Laplacien(u)=f) est $u(x,y) = x(1-x)y(1-y).
+
+    // Voici finalement notre problème, avec son solveur linéaire
+    problem laplace(u1,v1,solver=UMFPACK) = int2d(Th)( dx(u1)*dx(v1) + dy(u1)*dy(v1) )
+      - int2d(Th)( f*v1 ) + on(Gamma1,Gamma2,Gamma3,Gamma4,u1=0);
+
+    problem laplaceCG(u2,v2,solver=CG,eps=tolerance) = int2d(Th)( dx(u2)*dx(v2) + dy(u2)*dy(v2) )
+      - int2d(Th)( f*v2 ) + on(Gamma1,Gamma2,Gamma3,Gamma4,u2=0);
+
+    problem laplaceGMRES(u3,v3,solver=GMRES,eps=tolerance) = int2d(Th)( dx(u3)*dx(v3) + dy(u3)*dy(v3) )
+      - int2d(Th)( f*v3 ) + on(Gamma1,Gamma2,Gamma3,Gamma4,u3=0);
+
+
+
+    // Résolution du système linéaire
+    real t1 = clock(); // Pour mesure du temps cpu
+    laplace;
+    real t2 = clock(); // Pour mesure du temps cpu
+    laplaceCG;
+    real t3 = clock(); // Pour mesure du temps cpu
+    laplaceGMRES;
+    real t4 = clock(); // Pour mesure du temps cpu
+
+    // Visualisation de la solution
+    //plot(u, fill=true,value=true,boundary=true,wait=true);
+
+    // Solution exacte projetee dans Vh
+    Vh ue;
+    ue = x*(1-x)*y*(1-y); // Expression de la solution exacte
+
+    // Calcul des erreurs
+    real normeL2, errL2;
+    normeL2 = sqrt( int2d(Th) ( (ue)^2 ) );
+    errL2 = sqrt( int2d(Th) ( (u1-ue)^2 ) );
+
+    real errL2CG;
+    errL2CG = sqrt( int2d(Th) ( (u2-ue)^2 ) );
+
+    real errL2GMRES;
+    errL2GMRES = sqrt( int2d(Th) ( (u3-ue)^2 ) );
+
+    tfile << "  Erreur L2 relative : " << errL2/normeL2 << endl;
+    tfile << "  Temps CPU total : " << t2-t1 << endl;
+
+    tfile << "  Erreur L2 relative CG : " << errL2CG/normeL2 << endl;
+    tfile << "  Temps CPU total : " << t3-t2 << endl;
+
+    tfile << "  Erreur L2 relative GMRES : " << errL2GMRES/normeL2 << endl;
+    tfile << "  Temps CPU total : " << t4-t3 << endl;
+
+
+
+    gfile << 1./n << "  " << errL2/normeL2 << "  " << t2-t1 << "  " << errL2CG/normeL2 << "  " << t3-t2 <<  "  " << errL2GMRES/normeL2 << "  " << t4-t3 << endl;
+
+
+
+
+  }
