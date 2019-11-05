@@ -73,7 +73,7 @@ for (int k=0;k<6;++k) // Pour k=7, ça devient trop gros
     // On a besoin de 2 fonctions u et v dans Vh
     Vh u,v;
     // D'une fonction definie de manière analytique (pour le second membre)
-    func f = cos(2*pi*x)*(2 - 4*pi^2*y*(1-y));
+    func f = cos(2*pi*x)*(2 - 4*pi^2*y*(y-1));
     // Qui s'annule bien au bord du domaine et dont la solution (de
     // -Laplacien(u)=f) est $u(x,y) = x(1-x)y(1-y).
 

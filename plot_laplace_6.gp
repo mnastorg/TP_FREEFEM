@@ -43,14 +43,14 @@ set style line 7 lt rgb "#FF66FF" lw 2 # Rose
 
 set xlabel "pas de maillage h"
 set ylabel "erreur relative"
-set title "Equation de Laplace avec u(x,y)=x+y"
+set title "Equation de Laplace avec u(x,y)= sin(2*pi*x)*sin(2*pi*y)"
 set key bottom right
 
-set output "output1/laplace_errors_umfpack.pdf"
-plot [0.001:0.2] "output1/laplace_errorsL2_umfpack.txt" u 1:2 w lp ls 1 t 'Norme L^2' , "output1/laplace_errorsH1_umfpack.txt" u 1:2 w lp ls 2 t 'Norme H^1'
+set output "output6/laplace_errors_umfpack.pdf"
+plot [0.001:0.2] "output6/laplace_errorsL2_umfpack.txt" u 1:2 w lp ls 1 t 'Norme L^2' , "output6/laplace_errorsH1_umfpack.txt" u 1:2 w lp ls 2 t 'Norme H^1'
 
-set output "output1/laplace_cpu.pdf"
+set output "output6/laplace_cpu.pdf"
 set ylabel "temps (s)"
 set key top right
 plot [0.001:0.2] \
-     "output1/laplace_errorsL2_umfpack.txt" u 1:3 w lp ls 1 t 'temps CPU -- UMFPACK'
+     "output6/laplace_errorsL2_umfpack.txt" u 1:3 w lp ls 1 t 'temps CPU -- UMFPACK'

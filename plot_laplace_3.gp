@@ -43,7 +43,7 @@ set style line 7 lt rgb "#FF66FF" lw 2 # Rose
 
 set xlabel "pas de maillage h"
 set ylabel "erreur relative"
-set title "Equation de Laplace avec u(x,y)=x+y"
+set title "Equation de Laplace avec u(x,y)= cos(2*pi*x)*y*(1-y)"
 set key bottom right
 
 set output "output3/laplace_errors_umfpack.pdf"
