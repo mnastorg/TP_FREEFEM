@@ -46,18 +46,17 @@ set ylabel "erreur relative"
 set title "Equation de Laplace avec u(x,y)=x*y*(1-x)*(1-y)"
 set key bottom right
 
-set output "output/laplace_errors_umfpack.pdf"
-plot [0.001:0.2] "output/laplace4_errors_umfpack.txt" u 1:2 w lp ls 1 t 'Norme L^2 UMFPACK'
-plot [0.001:0.2] "output/laplace4_errors_umfpack.txt" u 1:4 w lp ls 1 t 'Norme L^2 GC'
-plot [0.001:0.2] "output/laplace4_errors_umfpack.txt" u 1:6 w lp ls 1 t 'Norme L^2 GMRES'
+set output "output5/laplace_errors_umfpack.pdf"
+plot [0.001:0.2] "output5/laplace5_errors_umfpack.txt" u 1:2 w lp ls 1 t 'Norme L^2 UMFPACK'
+plot [0.001:0.2] "output5/laplace5_errors_umfpack.txt" u 1:4 w lp ls 1 t 'Norme L^2 GC'
+plot [0.001:0.2] "output5/laplace5_errors_umfpack.txt" u 1:6 w lp ls 1 t 'Norme L^2 GMRES'
 
-set output "output/laplace_cpu.pdf"
+set output "output5/laplace_cpu.pdf"
 set ylabel "temps (s)"
 set key top right
 plot [0.001:0.2] \
-     "output/laplace4_errors_umfpack.txt" u 1:3 w lp ls 1 t 'temps CPU -- UMFPACK'
+     "output5/laplace5_errors_umfpack.txt" u 1:3 w lp ls 1 t 'temps CPU -- UMFPACK'
 plot [0.001:0.2] \
-     "output/laplace4_errors_umfpack.txt" u 1:5 w lp ls 1 t 'temps CPU -- GC'
+     "output5/laplace5_errors_umfpack.txt" u 1:5 w lp ls 1 t 'temps CPU -- GC'
 plot [0.001:0.2] \
-     "output/laplace4_errors_umfpack.txt" u 1:7 w lp ls 1 t 'temps CPU -- GMRES'
-
+     "output5/laplace5_errors_umfpack.txt" u 1:7 w lp ls 1 t 'temps CPU -- GMRES'

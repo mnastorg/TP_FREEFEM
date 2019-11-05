@@ -1,9 +1,11 @@
 //verbosity 0;
 
 // Trace de l'éxécution dans un fichier
-ofstream tfile("output/laplace5_trace_umfpack.txt");
+ofstream tfile("output4/laplace4_trace_umfpack.txt");
+
 // Fichier de sortie sous forme de tableau pour tracé gnuplot
-ofstream gfile("output/laplace5_errors_umfpack.txt");
+ofstream gfile("output4/laplace4_errors_umfpack.txt");
+
 
 tfile << "Probleme de Laplace" << endl;
 
@@ -21,14 +23,17 @@ border Gamma3(t=0,1) {x=1-t; y=1;};
 border Gamma4(t=0,1) {x=0; y=1-t;};
 
 // Boucle sur une famille de maillages de plus en plus fins
-for (int k=1;k<5;++k) // Pour k=7, ça devient trop gros
+for (int i=1;i<13;++i) // Pour k=7, ça devient trop gros
   {
+    real l = i;
+    l = -l;
+    real tolerance = 10^(l);
     // Construction du maillage
-    int n = 10*2^k; // Nombre de points par côté
+    int n = 10*2^3; // Nombre de points par côté
 
     mesh Th = buildmesh(Gamma1(n)+Gamma2(n)+Gamma3(n)+Gamma4(n));
 
-    tfile << "k = " << k << endl;
+    tfile << "  Tolerance : " << tolerance << endl;
     tfile << "  Nombre de sommets par cote : " << n << endl;
     tfile << "  Nombre de sommets dans le maillage : " << Th.nv << endl;
     tfile << "  Nombre de triangles dans le maillage : " << Th.nt << endl;
@@ -42,7 +47,7 @@ for (int k=1;k<5;++k) // Pour k=7, ça devient trop gros
     fespace Vh(Th,P1);
     tfile << "  Nombre de degres de liberte : " << Vh.ndof << endl;
 
-    cout << "*** k = " << k << " --> n = " << n << " , #DOf = " << Vh.ndof << " ***" << endl;
+    cout << "*** Tolerance : " << tolerance << " --> n = " << n << " , #DOf = " << Vh.ndof << " ***" << endl;
 
     // Définition de la formulation variationnelle dans Vh
 
@@ -59,10 +64,10 @@ for (int k=1;k<5;++k) // Pour k=7, ça devient trop gros
     problem laplace(u1,v1,solver=UMFPACK) = int2d(Th)( dx(u1)*dx(v1) + dy(u1)*dy(v1) )
       - int2d(Th)( f*v1 ) + on(Gamma1,Gamma2,Gamma3,Gamma4,u1=0);
 
-    problem laplaceCG(u2,v2,solver=CG,eps=1.0e-10) = int2d(Th)( dx(u2)*dx(v2) + dy(u2)*dy(v2) )
+    problem laplaceCG(u2,v2,solver=CG,eps=tolerance) = int2d(Th)( dx(u2)*dx(v2) + dy(u2)*dy(v2) )
       - int2d(Th)( f*v2 ) + on(Gamma1,Gamma2,Gamma3,Gamma4,u2=0);
 
-    problem laplaceGMRES(u3,v3,solver=GMRES,eps=1.0e-10) = int2d(Th)( dx(u3)*dx(v3) + dy(u3)*dy(v3) )
+    problem laplaceGMRES(u3,v3,solver=GMRES,eps=tolerance) = int2d(Th)( dx(u3)*dx(v3) + dy(u3)*dy(v3) )
       - int2d(Th)( f*v3 ) + on(Gamma1,Gamma2,Gamma3,Gamma4,u3=0);
 
 
@@ -105,7 +110,9 @@ for (int k=1;k<5;++k) // Pour k=7, ça devient trop gros
 
 
 
-    gfile << 1./n << "  " << errL2/normeL2 << "  " << t2-t1 << "  " << errL2CG/normeL2 << "  " << t3-t2 <<  errL2GMRES/normeL2 << "  " << t4-t3 << endl;
+    gfile << tolerance << "  " << errL2/normeL2 << "  " << t2-t1 << "  " << errL2CG/normeL2 << "  " << t3-t2 <<  "  " << errL2GMRES/normeL2 << "  " << t4-t3 << endl;
+
+
 
 
   }
