@@ -21,7 +21,7 @@ border Gamma3(t=0,1) {x=1-t; y=1;};
 border Gamma4(t=0,1) {x=0; y=1-t;};
 
 // Boucle sur une famille de maillages de plus en plus fins
-for (int k=1;k<5;++k) // Pour k=7, ça devient trop gros
+for (int k=1;k<6;++k) // Pour k=7, ça devient trop gros
   {
     // Construction du maillage
     int n = 10*2^k; // Nombre de points par côté
@@ -105,7 +105,7 @@ for (int k=1;k<5;++k) // Pour k=7, ça devient trop gros
 
 
 
-    gfile << 1./n << "  " << errL2/normeL2 << "  " << t2-t1 << "  " << errL2CG/normeL2 << "  " << t3-t2 <<  errL2GMRES/normeL2 << "  " << t4-t3 << endl;
+    gfile << 1./n << "  " << errL2/normeL2 << "  " << t2-t1 << "  " << errL2CG/normeL2 << "  " << t3-t2 <<  "  " << errL2GMRES/normeL2 << "  " << t4-t3 << endl;
 
 
   }
