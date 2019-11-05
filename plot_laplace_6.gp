@@ -46,11 +46,22 @@ set ylabel "erreur relative"
 set title "Equation de Laplace avec u(x,y)= sin(2*pi*x)*sin(2*pi*y)"
 set key bottom right
 
-set output "output6/laplace_errors_umfpack.pdf"
-plot [0.001:0.2] "output6/laplace_errorsL2_umfpack.txt" u 1:2 w lp ls 1 t 'Norme L^2' , "output6/laplace_errorsH1_umfpack.txt" u 1:2 w lp ls 2 t 'Norme H^1'
+set output "output6/laplace6_errorsL2_umfpack.pdf"
+plot [0.001:0.2] \
+    "output6/laplace_errorsL2_umfpack.txt" u 1:2 w lp ls 1 t 'Norme L^2' ,\
+    "output6/laplace_errorsL2_umfpack.txt" u 1:4 w lp ls 2 t 'Norme L^2' ,\
+    "output6/laplace_errorsL2_umfpack.txt" u 1:6 w lp ls 3 t 'Norme L^2' ,
 
-set output "output6/laplace_cpu.pdf"
+set output "output6/laplace6_errorsH1_umfpack.pdf"
+plot [0.001:0.2] \
+    "output6/laplace_errorsH1_umfpack.txt" u 1:2 w lp ls 1 t 'Norme H1' ,\
+    "output6/laplace_errorsH1_umfpack.txt" u 1:4 w lp ls 2 t 'Norme H1' ,\
+    "output6/laplace_errorsH1_umfpack.txt" u 1:6 w lp ls 3 t 'Norme H1' ,
+
+set output "output6/laplace6_cpu.pdf"
 set ylabel "temps (s)"
 set key top right
 plot [0.001:0.2] \
-     "output6/laplace_errorsL2_umfpack.txt" u 1:3 w lp ls 1 t 'temps CPU -- UMFPACK'
+     "output6/laplace_errorsL2_umfpack.txt" u 1:3 w lp ls 1 t 'temps CPU -- UMFPACK',\
+     "output6/laplace_errorsL2_umfpack.txt" u 1:5 w lp ls 2 t 'temps CPU -- UMFPACK',\
+     "output6/laplace_errorsL2_umfpack.txt" u 1:7 w lp ls 3 t 'temps CPU -- UMFPACK'

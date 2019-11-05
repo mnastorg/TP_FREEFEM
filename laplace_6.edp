@@ -50,13 +50,17 @@ for (int k=0;k<6;++k) // Pour k=7, ça devient trop gros
 
     real[int] A(3);
     A[0] = 1 ; A[1] = 3 ; A[2] = 6;
+    real[int] B(3);
+    real[int] C(3);
+    real[int] D(3);
+    int n = 10*2^k; // Nombre de points par côté
 
     for (int i=0;i<3;++i)
       {
         // Construction du maillage
         int r = A[i];
 
-        int n = 10*2^k; // Nombre de points par côté
+
         real t1 = clock(); // Pour mesure du temps cpu
         mesh Th = buildmesh(Gamma1(n)+Gamma2(n)+Gamma3(n)+Gamma4(n));
 
@@ -116,14 +120,19 @@ for (int k=0;k<6;++k) // Pour k=7, ça devient trop gros
 
         real t2 = clock(); // Pour mesure du temps cpu
 
+        B[i] = errL2/normeL2;
+        C[i] = errH1/normeH1;
+        D[i] = t2-t1;
+
         tfile << "  Erreur L2 relative : " << errL2/normeL2 << endl;
         tfile << "  Erreur H_1 relative : " << errH1/normeH1 << endl;
-        tfile << "  Temps CPU total : " << t2-t1 << endl;
-
-        gfile << 1./n << "  " << errL2/normeL2 << "  " << t2-t1 << endl;
-        gfile2 << 1./n << "  " << errH1/normeH1 << "  " << t2-t1 << endl;
+        tfile << " Temps CPU total : " << t2-t1 << endl;
         minfile << k << "  " << minapp << "  " << minex << endl;
-        maxfile << k << "  " << maxapp << "  " << maxex << endl;
+        maxfile << k << " " << maxapp << " " << maxex << endl;
 
       }
+
+
+      gfile << 1./n << "  " << B[0] << "  " << D[0] << "  "<<  B[1] << "  " << D[1] << "  " << B[2] << "  " << D[2] << endl;
+      gfile2 << 1./n << "  " << C[0] << "  " << D[0] << "  " << C[1] << "  " << D[1] << "  " << C[2] << "  " << D[2] << endl;
   }
