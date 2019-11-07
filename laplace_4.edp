@@ -29,7 +29,7 @@ for (int i=1;i<13;++i) // Pour k=7, ça devient trop gros
     l = -l;
     real tolerance = 10^(l);
     // Construction du maillage
-    int n = 10*2^3; // Nombre de points par côté
+    int n = 10*2^4; // Nombre de points par côté
 
     mesh Th = buildmesh(Gamma1(n)+Gamma2(n)+Gamma3(n)+Gamma4(n));
 

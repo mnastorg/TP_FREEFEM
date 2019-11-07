@@ -1,6 +1,7 @@
 \documentclass[11pt,a4paper]{report}
 
-\input{preambule_master.tex}
+%\input{preambule_master.tex}
+\input{/home/matthieu/Documents/LATEX/preambule_master.tex}
 
 \begin{document}
 	
@@ -19,34 +20,30 @@
 				\right.
 			\]
 			
-			Ici, nous avons choisi la fonction : $x*(1-x)*y*(1-y)$. La résolution de ce problème nous est donné dans les fichiers fournis. On précise que $\Omega$ est un domaine carré $(0,1)\times(0,1)$. De plus nous utilisons pour notre résolution les éléments finis $P1$.
+			Ici, nous avons choisi la fonction : $x(1-x)y(1-y)$. La résolution de ce problème nous est donné dans les fichiers fournis. On précise que $\Omega$ est un domaine carré $(0,1)\times(0,1)$. De plus nous utilisons pour notre résolution les éléments finis $P1$.
 			
-			On nous demande, d'évaluer l'erreur sur la semi-norme $H^1$ définie par : 
+			On nous demande d'évaluer l'erreur sur la semi-norme $H^1$ définie par : 
 			
 			\[
 				E_{H^1} = \displaystyle \left(\int_{\Omega} |\nabla u - \nabla u_h|^2 \dx \right)^{\frac{1}{2}}
 			\]
 		
 		
-			On affiche, ci-après, le graphique d'erreur $L^2$ et $H^1$ relatif à la résolution approchée du problème. L'erreur est affichée en fonction d'une boucle de maillage de plus en plus fin.
+			On affiche, ci-dessous, le graphique d'erreur $L^2$ et $H^1$ relatif à la résolution approchée du problème. L'erreur est affichée en fonction d'une boucle de maillage de plus en plus fin.
 			
 			\begin{figure}[H]
 				\centering
-				\includegraphics[scale=0.8]{output1/laplace_errors_umfpack.png}
+				\includegraphics[scale=0.6]{output1/laplace_errors_umfpack.png}
 			\end{figure}
 		
-			On remarque que, plus le maillage s'affine, plus les erreurs diminuent, ce qui est rassurant car nous rajoutons plus de points et donc augmentons notre précision.
-		
-			%AJOUTER POURQUOI H1 EST MOINS PRECIS QUE L2
-		
-			On affiche également ci-dessous le temps de calcul CPU en fonction de la finesse du maillage. On s'attend à ce que la courbe augmente plus le maillage s'affine. Résultat confirmé par le graphique ci-dessous.
+			De ces graphes, on peut dire que plus le maillage s'affine, plus les erreurs diminuent. En effet, en rajoutant des points dans le maillage, l'interpolation via les éléments finis P1 est plus précise et garantit donc une approximation de plus en plus juste (en atteste le tableau min-max décrit plus loin). Il est cependant important de trouver un juste milieu entre précision et temps de calcul... C'est pour cela que l'on affiche également ci-dessous le temps de calcul CPU en fonction de la finesse du maillage. On s'attend à ce que la courbe augmente plus le maillage s'affine. Résultat confirmé par le graphique ci-dessous.
 		
 			\begin{figure}[H]
 				\centering
-				\includegraphics[scale=0.8]{output1/laplace_cpu.png}
+				\includegraphics[scale=0.6]{output1/laplace_cpu.png}
 			\end{figure}
 		
-			Par suite, nous donnons le tableau des minimums et maximums des solutions approchées et exactes en fonction du pas du maillage. Il est fortement utile de ressortir ces valeurs pour analyser la justesse de notre solution. En effet, on s'attend à ce que, plus le maillage devient fin, plus les maximums et minimums approchés se rapprochent de leurs valeurs exactes respectives. En plus du graphique de diminution de l'erreur, ces dernières nous donnent un second indice quant à la justesse de notre approximation, d'où l'intérêt de savoir les extraire et les analyser. Nous voyons que, dans notre cas, les valeurs approchées tendent bien vers celles exactes.		
+			Par suite, nous donnons le tableau des minimums et maximums des solutions approchées et exactes en fonction du pas du maillage. Il est fortement utile de ressortir ces valeurs pour analyser la justesse de notre solution. En effet, on s'attend à ce que plus le maillage devient fin, plus les maximums et minimums approchés se rapprochent de leurs valeurs exactes respectives. En plus du graphique de diminution de l'erreur, ces dernières nous donnent un second indice quant à la justesse de notre approximation, d'où l'intérêt de savoir les extraire et les analyser. Nous voyons que, dans notre cas, les valeurs approchées tendent bien vers celles exactes.		
 		
 			\begin{center}
 				\begin{tabular}{|c|c|c|c|c|}
@@ -91,12 +88,12 @@
 			
 			\begin{figure}[H]
 				\centering
-				\includegraphics[scale=0.8]{output2/laplace_errors_umfpack.png}
+				\includegraphics[scale=0.6]{output2/laplace_errors_umfpack.png}
 			\end{figure}
 	
-			On remarque que, quelque soit, le pas de maillage, l'erreur reste constante. Cela provient du fait que les éléments P1 utilisés pour l'étude sont exacts. En effet, la fonction $u(x,y)$ approximée est linéaire et, comme les éléments P1 font des interpolations linéaires entre points du maillage, il est logique qu'ils soient, dans ce cas, exacts.
+			On remarque que, quelque soit le pas de maillage, l'erreur reste constante. Cela provient du fait que les éléments P1 utilisés pour l'étude sont exacts. En effet, la fonction $u(x,y)$ approximée est linéaire et, comme les éléments P1 font des interpolations linéaires entre points du maillage, il est logique qu'ils soient, dans ce cas, exacts.
 			
-			On retrouve les mêmes résultats que la question 1 concernant l'augmentation du temps de calcul CPU. Finalement, on affiche le tableau des minimums et maximums. On remarque que les résultats sont en adéquation avec nos attentes, ce qui permet de justifier la qualité de notre approximation.
+			On retrouve les mêmes résultats que la question 1 concernant l'augmentation du temps de calcul CPU. Finalement, on affiche le tableau des minimums et maximums. On remarque que les résultats sont en adéquation avec nos attentes, ce qui permet de justifier la qualité de notre approximation pour cette étude.
 					
 			\begin{center}
 				\begin{tabular}{|c|c|c|c|c|}
@@ -122,20 +119,20 @@
 
 		\section*{Question 3}
 			
-			Nous allons reproduire l'analyse pour la fonction $u(x,y) = \cos(2*\pi*x)*y*(1-y)$ avec les conditions de bord mixtes suivantes : 
+			Nous allons reproduire l'analyse pour la fonction $u(x,y) = \cos(2\pi x)y(1-y)$ avec les conditions de bord mixtes suivantes : 
 			\begin{itemize}
-				\item $(x,y) = 0$ pour ${y = 0}$ et ${y = 1}$ (Condition de \bsc{Dirichlet})
-				\item $\dfrac{\partial u }{\partial n} = 0$ pour ${x = 0}$ et ${x = 1}$ (Condition de \bsc{Neumann})
+				\item $u(x,y) = 0$ pour $\{y = 0\}$ et $\{y = 1\}$ (Condition de \bsc{Dirichlet})
+				\item $\dfrac{\partial u }{\partial n} = 0$ pour $\{x = 0\}$ et $\{x = 1\}$ (Condition de \bsc{Neumann})
 			\end{itemize}
 		
 			Pour commencer, calculons le second membre $f$ : 
 			\[
-			-\Delta u = f \Longrightarrow f = \cos(2*\pi*x)*(2 - 4*\pi^2*y*(y-1))
+			-\Delta u = f \Longrightarrow f = \cos(2\pi x)(2 - 4\pi^2y(y-1))
  			\]
  			
  			Concernant les conditions de bord : 
  			\begin{itemize}
- 				\item \bsc{Dirichlet} : On fait implémente comme depuis le début sur $\Gamma 1$ et $\Gamma 3$
+ 				\item \bsc{Dirichlet} : On implémente comme depuis le début sur $\Gamma 1$ et $\Gamma 3$
  				\item \bsc{Neumann} : On ne fait rien car, dans la formulation variationnelle implémentée, nous avons déjà retiré le terme $\displaystyle \int_{\partial\Omega} \frac{\partial u }{\partial n}.v ds$. Sans précisions sur les termes de bord (comme pour \bsc{Dirichlet} par exemple),\bsc{Freefem++} interprétera cela comme $\dfrac{\partial u}{\partial n} = 0$.
  			\end{itemize}
  		
@@ -143,7 +140,7 @@
  			
 			\begin{figure}[H]
 			\centering
-			\includegraphics[scale=0.8]{output3/laplace_errors_umfpack.png}
+			\includegraphics[scale=0.6]{output3/laplace_errors_umfpack.png}
 			\end{figure}
 		
 			 Finalement le calcul des maximums et minimums nous permettent de bien justifier la pertinence de notre approximation.
@@ -169,38 +166,39 @@
 		
 			\section*{Question 4}
 				
-				Pour les questions 4 et 5, nous allons d'avantage nous focaliser les méthodes de résolution de système linéaire dont une directe (la méthode LU de UMFPACK) et deux itératives (la méthode du gradient conjugué CG ainsi que la généralisation de la méthode de minimisation du résidu GMRES). 
-				Pour cela, nous allons utiliser le problème initiale de ce TP ainsi que la norme L2.
-				Nous allons donc fixer notre maillage le plus fin possible pour résoudre le système linéaire dans un temps raisonnable avec UMFPACK soit 160 points par cotés du domaine considéré. 
+				Pour les questions 4 et 5, nous allons d'avantage nous focaliser sur les méthodes de résolution de systèmes linéaires dont une directe (la méthode \bsc{LU} de \bsc{UMFPACK}) et deux itératives (la méthode du gradient conjugué \bsc{CG} ainsi que la généralisation de la méthode de minimisation du résidu \bsc{GMRES}). 
+				Pour cela, nous allons utiliser le problème initial de ce TP ainsi que la norme L2. Nous allons donc fixer notre maillage le plus fin possible pour résoudre le système linéaire dans un temps raisonnable avec UMFPACK soit 160 points par cotés du domaine considéré ($k = 4$). 
+				
+				
 				Voici le graphe d'erreur en fonction de la tolérance donnée aux différentes méthodes :
 											
 				\begin{figure}[H]
 					\centering
-					\includegraphics[scale=0.8]{output4/laplace_errors_umfpack.png}				
+					\includegraphics[scale=0.6]{output4/laplace_errors_umfpack.png}				
 				\end{figure}
 
-				On remarque que l'erreur engendrée par les méthodes itératives décroit rapidement avec la tolérance de plus à partir d'une tolérance de l'ordre de $10^{-5}$, ces méthodes sont aussi précises que la méthode LU de UMPFPACK. Ce qui n'est pas étonnant puisque la méthode directe a une erreur de l'ordre de $10^{-5}$ aussi.
+				On remarque que l'erreur engendrée par les méthodes itératives décroit rapidement avec la tolérance. De plus, à partir d'une tolérance de l'ordre de $10^{-5}$, ces méthodes sont aussi précises que la méthode LU de UMPFPACK. Ce qui n'est pas étonnant puisque la méthode directe a une erreur de l'ordre de $10^{-5}$ aussi.
 				
-				On s'interesse maintenant au temps de calcule de ces différentes méthodes en fonction de la tolérance :
+				On s'interesse maintenant au temps de calcul de ces différentes méthodes en fonction de la tolérance :
 
 				\begin{figure}[H]
 					\centering
-					\includegraphics[scale=0.8]{output4/laplace_cpu.png}				
+					\includegraphics[scale=0.6]{output4/laplace_cpu.png}				
 				\end{figure}
 				
 				Ce graphe nous montre que la méthode GMRES met plus de temps que la méthode directe et que cette différence croît grandement avec la diminution de la tolérance. Il serait donc déconseillé d'utiliser cette méthode dans ce cas.\\
-				La méthode CG, quant à elle, met moins de temps que la méthode LU pour une tolérance supérieur à $10^{-5}$ et plus de temps lorsque cette tolérance passe sous cette limite. Il peut donc être avantageux d'utiliser cette méthode si on estime que l'erreur commise sur la résolution du système linéaire a moins d'importance que le gains de temps généré par cette méthode.
+				La méthode CG, quant à elle, met moins de temps que la méthode LU pour une tolérance supérieur à $10^{-5}$ et plus de temps lorsque cette tolérance passe sous cette limite. Il peut donc être avantageux d'utiliser cette méthode si l'on estime que l'erreur commise sur la résolution du système linéaire a moins d'importance que le gain de temps généré.
 			
 			\section*{Quesiton 5}
 				
-				Dans cette section, on s'interesse à l'impacte de la finesse du maillage sur le temps de calcul ainsi qu'a l'erreur commise par les deux méthodes itératives utilisées précédemment.\\
+				Dans cette section, on s'interesse à l'impact de la finesse du maillage sur le temps de calcul ainsi qu'à l'erreur commise par les deux méthodes itératives utilisées précédemment.
 				Pour cela, nous fixons la tolérance des ces deux méthodes à $10^{-10}$ et nous utilisons la suite de maillage utilisée dans les premières questions.
 
 				Nous obtenons le graphe d'erreur ci-dessous :
 
 				\begin{figure}[H]
 					\centering
-					\includegraphics[scale=0.8]{output5/laplace_errors_umfpack.png}
+					\includegraphics[scale=0.6]{output5/laplace_errors_umfpack.png}
 				\end{figure}
 
 				Les trois courbes sont confondues, ce qui indique qu'avec une tolérance de $10^{-10}$, l'erreur commise sur la résolution du système linéaire est négligeable par rapport à l'erreur de la méthode employée.
@@ -209,10 +207,11 @@
 				
 				\begin{figure}[H]
 					\centering
-					\includegraphics[scale=0.8]{output5/laplace_cpu.png}
+					\includegraphics[scale=0.6]{output5/laplace_cpu.png}
 				\end{figure}
 
 				On s'aperçoit dans un premier temps que la méthode GMRES met toujours plus de temps que la méthode directe quelque soit la taille de maillage et que cette différence s'accentue avec la diminution de la taille de ce maillage.\\
+				
 				Dans un deuxième temps, on s'aperçoit que la méthode CG met moins de temps que la méthode directe pour un maillage grossier et qu'à partir d'une certaine limite, cette méthode deviens moins efficace que la méthode directe.
 		
 		\section*{Question 6}
