@@ -25,18 +25,6 @@ gfile2 << "# sur une suite de maillages" << endl;
 gfile2 << "# et pour une solution analytique quadratique en x et y" << endl;
 gfile2 << "# pas h, erreur H^1 relative, erreur relative H^1 sur le gradient, temps CPU" << endl;
 
-minfile << "# Resolution de -Laplacien(u) = f avec u = 0 au bord" << endl;
-minfile << "# sur le carre [0,1]x[0,1] en elements finis P1 Lagrange" << endl;
-minfile << "# sur une suite de maillages" << endl;
-minfile << "# et pour une solution analytique quadratique en x et y" << endl;
-minfile << "# maillage k, minimum solution approche, minimum solution exacte" << endl;
-
-maxfile << "# Resolution de -Laplacien(u) = f avec u = 0 au bord" << endl;
-maxfile << "# sur le carre [0,1]x[0,1] en elements finis P1 Lagrange" << endl;
-maxfile << "# sur une suite de maillages" << endl;
-maxfile << "# et pour une solution analytique quadratique en x et y" << endl;
-maxfile << "# maillage k, maximum solution approche, maximum solution exacte" << endl;
-
 
 // Définition des bord du domaine de calcul
 border Gamma1(t=0,1) {x=t; y=0;};
@@ -114,7 +102,7 @@ for (int k=0;k<6;++k) // Pour k=7, ça devient trop gros
 
     gfile << 1./n << "  " << errL2/normeL2 << "  " << t2-t1 << endl;
     gfile2 << 1./n << "  " << errH1/normeH1 << "  " << t2-t1 << endl;
-    minfile << k << "  " << minapp << "  " << minex << endl;
-    maxfile << k << "  " << maxapp << "  " << maxex << endl;
+    minfile << 1./n << "  " << minapp << "  " << minex << endl;
+    maxfile << 1./n << "  " << maxapp << "  " << maxex << endl;
 
   }

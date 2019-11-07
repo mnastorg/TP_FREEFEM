@@ -1,0 +1,132 @@
+\documentclass[11pt,a4paper]{report}
+
+\input{/home/matthieu/Documents/LATEX/preambule_master.tex}
+
+\begin{document}
+	\pagedegarde{Rapport TP Freefem ++}{Nastorg Matthieu \& Philibert Thomas}
+	
+	\section*{Question 1 :}
+		
+		On s'intéresse à l'étude par éléments finis, via le langage de programmation \bsc{FREEFEM++}, du problème suivant : 
+			
+		\[
+			\left\{
+			\begin{array}{ll}
+			- \Delta u = f & \mbox{ si } u \in \Omega \\
+			u = 0 & \mbox{ si } u \in \partial\Omega
+			\end{array}
+			\right.
+		\]
+		
+		Ici, nous avons choisi la fonction : $x*(1-x)*y*(1-y)$. La résolution de ce problème nous est donné dans les fichiers fournis.
+		
+		On nous demande, d'évaluer l'erreur sur la semi-norme $H^1$ définie par : 
+		\[
+			E_{H^1} = \displaystyle \left(\int_{\Omega} |\nabla u - \nabla u_h|^2 \dx \right)^{\frac{1}{2}}
+		\]
+		
+		On affiche, ci-après, le graphique d'erreur $L^2$ et $H^1$ relatif à la fonction. L'erreur est affichée en fonction du maillage utilisé, qui est de plus en plus fin.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.8]{output1/laplace_errors_umfpack.png}
+		\end{figure}
+		
+		Nous allons, ci-après, donner le tableau des minimum et maximum des solutions approchées et exactes en fonction du pas du maillage.
+		
+		
+		\begin{center}
+			\begin{tabular}{|c|c|c|c|c|}
+				\hline
+				pas & minimum approché & minimum exact & maximum approché & maximum exact \\
+				\hline 
+				$0.1$ & $8.6*10^{-63}$ & $0$ & $0.0622894$ & $0.0625$\\ 
+				\hline 
+				$0.05$ & $2.4*10^{-63}$ & $0$ & $0.0624948$ & $0.0625$\\ 
+				\hline 
+				$0.025$ & $6.4*10^{-64}$ & $0$ & $0.0624861$ & $0.0625$  \\ 
+				\hline 
+				$0.0125$ & $1.6*10^{-64}$ & $0$ & $0.0624961$ & $0.0625$\\ 
+				\hline 
+				$0.00625$ & $4.3*10^{-65}$ & $0$ & $0.0624987$ & $0.0625$ \\ 
+				\hline 
+				$0.003125$ & $1.05*10^{-65}$ & $0$ & $0.0624996$ & $0.0625$ \\ 
+				\hline 
+			\end{tabular} 
+		\end{center}
+			
+		Nous pouvons constater que les valeurs min et max se rapprochent de la solution exacte plus le maillage s'affine.
+		
+		\section*{Question 2}
+		
+			\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.8]{output2/laplace_errors_umfpack.png}
+		\end{figure}
+	
+	
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			pas & minimum approché & minimum exact & maximum approché & maximum exact \\
+			\hline 
+			$0.1$ & $1*10^{-31}$ & $0$ & $1.9$ & $2$\\ 
+			\hline 
+			$0.05$ & $5*10^{-32}$ & $0$ & $1.95$ & $2$\\ 
+			\hline 
+			$0.025$ & $2.5*10^{-32}$ & $0$ & $1.975$ & $2$  \\ 
+			\hline 
+			$0.0125$ & $1.25*10^{-32}$ & $0$ & $1.9875$ & $2$\\ 
+			\hline 
+			$0.00625$ & $6.25*10^{-33}$ & $0$ & $1.99375$ & $2$ \\ 
+			\hline 
+			$0.003125$ & $3.125*10^{-33}$ & $0$ & $1.99687$ & $2$ \\ 
+			\hline 
+		\end{tabular} 
+	\end{center}
+	
+
+		\section*{Question 3}
+		
+			\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.8]{output3/laplace_errors_umfpack.png}
+			\end{figure}
+		
+		
+		\begin{center}
+			\begin{tabular}{|c|c|c|c|c|}
+				\hline
+				pas & minimum approché & minimum exact & maximum approché & maximum exact \\
+				\hline 
+				$0.1$ & $-0.248208$ & $-0.25$ & $0.250697$ & $0.25$\\ 
+				\hline 
+				$0.05$ & $-0.250084$ & $-0.25$ & $0.250316$ & $0.25$\\ 
+				\hline 
+				$0.025$ & $-0.249807$ & $-0.25$ & $0.250188$ & $0.25$  \\ 
+				\hline 
+				$0.0125$ & $-0.249946$ & $-0.25$ & $0.250057 $ & $0.25$\\ 
+				\hline 
+				$0.00625$ & $-0.249983$ & $-0.25$ & $0.250023$ & $0.25$ \\ 
+				\hline 
+				$0.003125$ & $-0.249995$ & $-0.25$ & $0.250006$ & $0.25$ \\ 
+				\hline 
+			\end{tabular} 
+		\end{center}
+
+		\section*{Question 4}
+		
+			\begin{figure}[H]
+				\centering
+				\includegraphics[scale=0.8]{output4/laplace_errors_umfpack.png}
+			\end{figure}
+		\section*{Quesiton 5}
+		
+			\begin{figure}[H]
+				\centering
+				\includegraphics[scale=0.8]{output5/laplace_errors_umfpack.png}
+			\end{figure}
+		
+		\section*{Question 6}
+
+\end{document}

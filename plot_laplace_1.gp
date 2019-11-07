@@ -2,8 +2,10 @@
 # Tracés gnuplot avec styles de lignes perso
 
 # Output dans un fichier pdf
-set terminal pdfcairo enhanced color font "Arial, 12" linewidth 2 fontscale 1.0 \
+#set terminal pdfcairo enhanced color font "Arial, 12" linewidth 2 fontscale 1.0 \
     size 10,6 # inches
+
+set term png
 
 #set term postscript eps enhanced color linewidth 2 font "Arial, 12"
 #    size 10,6 # inches
@@ -43,13 +45,13 @@ set style line 7 lt rgb "#FF66FF" lw 2 # Rose
 
 set xlabel "pas de maillage h"
 set ylabel "erreur relative"
-set title "Equation de Laplace avec u(x,y)=x+y"
+set title "Equation de Laplace avec u(x,y)=x*y*(1-x)*(1-y)"
 set key bottom right
 
-set output "output1/laplace_errors_umfpack.pdf"
+set output "output1/laplace_errors_umfpack.png"
 plot [0.001:0.2] "output1/laplace_errorsL2_umfpack.txt" u 1:2 w lp ls 1 t 'Norme L^2' , "output1/laplace_errorsH1_umfpack.txt" u 1:2 w lp ls 2 t 'Norme H^1'
 
-set output "output1/laplace_cpu.pdf"
+set output "output1/laplace_cpu.png"
 set ylabel "temps (s)"
 set key top right
 plot [0.001:0.2] \
