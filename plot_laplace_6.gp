@@ -2,8 +2,10 @@
 # Tracés gnuplot avec styles de lignes perso
 
 # Output dans un fichier pdf
-set terminal pdfcairo enhanced color font "Arial, 12" linewidth 2 fontscale 1.0 \
+#set terminal pdfcairo enhanced color font "Arial, 12" linewidth 2 fontscale 1.0 \
     size 10,6 # inches
+
+set term png
 
 #set term postscript eps enhanced color linewidth 2 font "Arial, 12"
 #    size 10,6 # inches
@@ -46,22 +48,22 @@ set ylabel "erreur relative"
 set title "Equation de Laplace avec u(x,y)= sin(2*pi*x)*sin(2*pi*y)"
 set key bottom right
 
-set output "output6/laplace6_errorsL2_umfpack.pdf"
+set output "output6/laplace6_errorsL2_umfpack.png"
 plot [0.001:0.2] \
-    "output6/laplace_errorsL2_umfpack.txt" u 1:2 w lp ls 1 t 'Norme L^2' ,\
-    "output6/laplace_errorsL2_umfpack.txt" u 1:4 w lp ls 2 t 'Norme L^2' ,\
-    "output6/laplace_errorsL2_umfpack.txt" u 1:6 w lp ls 3 t 'Norme L^2' ,
+    "output6/laplace_errorsL2_umfpack.txt" u 1:2 w lp ls 1 t 'Norme L^2 , r = 1' ,\
+    "output6/laplace_errorsL2_umfpack.txt" u 1:4 w lp ls 2 t 'Norme L^2 , r = 3' ,\
+    "output6/laplace_errorsL2_umfpack.txt" u 1:6 w lp ls 3 t 'Norme L^2 , r = 6' ,
 
-set output "output6/laplace6_errorsH1_umfpack.pdf"
+set output "output6/laplace6_errorsH1_umfpack.png"
 plot [0.001:0.2] \
-    "output6/laplace_errorsH1_umfpack.txt" u 1:2 w lp ls 1 t 'Norme H1' ,\
-    "output6/laplace_errorsH1_umfpack.txt" u 1:4 w lp ls 2 t 'Norme H1' ,\
-    "output6/laplace_errorsH1_umfpack.txt" u 1:6 w lp ls 3 t 'Norme H1' ,
+    "output6/laplace_errorsH1_umfpack.txt" u 1:2 w lp ls 1 t 'Norme H1 , r = 1' ,\
+    "output6/laplace_errorsH1_umfpack.txt" u 1:4 w lp ls 2 t 'Norme H1 , r = 3' ,\
+    "output6/laplace_errorsH1_umfpack.txt" u 1:6 w lp ls 3 t 'Norme H1 , r = 6' ,
 
-set output "output6/laplace6_cpu.pdf"
+set output "output6/laplace6_cpu.png"
 set ylabel "temps (s)"
 set key top right
 plot [0.001:0.2] \
-     "output6/laplace_errorsL2_umfpack.txt" u 1:3 w lp ls 1 t 'temps CPU -- UMFPACK',\
-     "output6/laplace_errorsL2_umfpack.txt" u 1:5 w lp ls 2 t 'temps CPU -- UMFPACK',\
-     "output6/laplace_errorsL2_umfpack.txt" u 1:7 w lp ls 3 t 'temps CPU -- UMFPACK'
+     "output6/laplace_errorsL2_umfpack.txt" u 1:3 w lp ls 1 t 'temps CPU -- UMFPACK , r = 1',\
+     "output6/laplace_errorsL2_umfpack.txt" u 1:5 w lp ls 2 t 'temps CPU -- UMFPACK , r = 3',\
+     "output6/laplace_errorsL2_umfpack.txt" u 1:7 w lp ls 3 t 'temps CPU -- UMFPACK , r = 6'

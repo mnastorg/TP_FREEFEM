@@ -46,7 +46,7 @@ set style line 7 lt rgb "#FF66FF" lw 2 # Rose
 set xlabel "pas de maillage h"
 set ylabel "erreur relative"
 set title "Equation de Laplace avec u(x,y)=x*y*(1-x)*(1-y)"
-set key outside
+set key right bottom
 
 set output "output5/laplace_errors_umfpack.png"
 plot [0.001:0.2] \
@@ -56,7 +56,7 @@ plot [0.001:0.2] \
 
 set output "output5/laplace_cpu.png"
 set ylabel "temps (s)"
-set key outside
+set key right top
 plot [0.001:0.2] \
      "output5/laplace5_errors_umfpack.txt" u 1:3 w lp ls 1 t 'temps CPU -- UMFPACK',\
      "output5/laplace5_errors_umfpack.txt" u 1:5 w lp ls 2 t 'temps CPU -- GC',\
