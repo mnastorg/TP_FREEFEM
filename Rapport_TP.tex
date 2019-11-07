@@ -1,6 +1,6 @@
 \documentclass[11pt,a4paper]{report}
 
-\input{/home/matthieu/Documents/LATEX/preambule_master.tex}
+\input{preambule_master.tex}
 
 \begin{document}
 	
@@ -169,22 +169,113 @@
 		
 			\section*{Question 4}
 				
-				Pour les questions 4 et 5, nous allons d'avantage nous focaliser sur les temps de calcul en fonction des méthodes de résolution utilisées.
-				
-							
+				Pour les questions 4 et 5, nous allons d'avantage nous focaliser les méthodes de résolution de système linéaire dont une directe (la méthode LU de UMFPACK) et deux itératives (la méthode du gradient conjugué CG ainsi que la généralisation de la méthode de minimisation du résidu GMRES). 
+				Pour cela, nous allons utiliser le problème initiale de ce TP ainsi que la norme L2.
+				Nous allons donc fixer notre maillage le plus fin possible pour résoudre le système linéaire dans un temps raisonnable avec UMFPACK soit 160 points par cotés du domaine considéré. 
+				Voici le graphe d'erreur en fonction de la tolérance donnée aux différentes méthodes :
+											
 				\begin{figure}[H]
 					\centering
-					\includegraphics[scale=0.8]{output4/laplace_errors_umfpack.png}
-				
+					\includegraphics[scale=0.8]{output4/laplace_errors_umfpack.png}				
 				\end{figure}
+
+				On remarque que l'erreur engendrée par les méthodes itératives décroit rapidement avec la tolérance de plus à partir d'une tolérance de l'ordre de $10^{-5}$, ces méthodes sont aussi précises que la méthode LU de UMPFPACK. Ce qui n'est pas étonnant puisque la méthode directe a une erreur de l'ordre de $10^{-5}$ aussi.
+				
+				On s'interesse maintenant au temps de calcule de ces différentes méthodes en fonction de la tolérance :
+
+				\begin{figure}[H]
+					\centering
+					\includegraphics[scale=0.8]{output4/laplace_cpu.png}				
+				\end{figure}
+				
+				Ce graphe nous montre que la méthode GMRES met plus de temps que la méthode directe et que cette différence croît grandement avec la diminution de la tolérance. Il serait donc déconseillé d'utiliser cette méthode dans ce cas.\\
+				La méthode CG, quant à elle, met moins de temps que la méthode LU pour une tolérance supérieur à $10^{-5}$ et plus de temps lorsque cette tolérance passe sous cette limite. Il peut donc être avantageux d'utiliser cette méthode si on estime que l'erreur commise sur la résolution du système linéaire a moins d'importance que le gains de temps généré par cette méthode.
 			
 			\section*{Quesiton 5}
-			
+				
+				Dans cette section, on s'interesse à l'impacte de la finesse du maillage sur le temps de calcul ainsi qu'a l'erreur commise par les deux méthodes itératives utilisées précédemment.\\
+				Pour cela, nous fixons la tolérance des ces deux méthodes à $10^{-10}$ et nous utilisons la suite de maillage utilisée dans les premières questions.
+
+				Nous obtenons le graphe d'erreur ci-dessous :
+
 				\begin{figure}[H]
 					\centering
 					\includegraphics[scale=0.8]{output5/laplace_errors_umfpack.png}
 				\end{figure}
+
+				Les trois courbes sont confondues, ce qui indique qu'avec une tolérance de $10^{-10}$, l'erreur commise sur la résolution du système linéaire est négligeable par rapport à l'erreur de la méthode employée.
+
+				Comparons maintenant le temps de calcul de ces différentes méthodes :
+				
+				\begin{figure}[H]
+					\centering
+					\includegraphics[scale=0.8]{output5/laplace_cpu.png}
+				\end{figure}
+
+				On s'aperçoit dans un premier temps que la méthode GMRES met toujours plus de temps que la méthode directe quelque soit la taille de maillage et que cette différence s'accentue avec la diminution de la taille de ce maillage.\\
+				Dans un deuxième temps, on s'aperçoit que la méthode CG met moins de temps que la méthode directe pour un maillage grossier et qu'à partir d'une certaine limite, cette méthode deviens moins efficace que la méthode directe.
 		
 		\section*{Question 6}
+
+
+				\begin{center}
+					\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+						\hline
+						pas & minimum exact & minimum approché r = 1 & minimum approché r = 3 & minimum approché r = 6 & maximum exact & maximum approché r = 1 & maximum approché r = 3 & maximum approché r = 6 \\
+						\hline 
+						$0.1$ & $-0.951057$ & $-0.957207$ & $-0.957007$ & $-0.957024$ & $ 0.951057 $ & $ 0.961589 $ & $ 0.97398 $ & $ 0.974181 $ \\ 
+						\hline 
+						$0.05$ & $-1$ & $-0.998645$ & $-1.00135$ & $-1.00146$ & $ 1 $ & $ 0.989663 $ & $ 0.986455 $ & $ 0.986449 $\\ 
+						\hline 
+						$0.025$ & $-0.998981$ & $-0.999503$ & $-0.999291$ & $-0.999252$ & $ 1 $ & $ 1.0004 $ & $ 1.00084 $ & $ 1.00085 $  \\ 
+						\hline 
+						$0.0125$ & $-0.999241$ & $-0.999309$ & $-0.999391 $ & $-0.999398$ & $ 0.999241 $ & $ 0.999171 $ & $ 0.999194 $ & $ 0.999196 $\\ 
+						\hline
+						$0.00625$ & $-0.999807$ & $-0.999836$ & $-0.999764$ & $-0.99977$ & $ 0.999868 $ & $ 0.999834 $ & $ 1.00011 $ & $ 1.00011 $ \\ 
+						\hline 
+						$0.003125$ & $-1$ & $-1.00004$ & $-1.00008$ & $-1.00008$ & $ 1 $ & $ 0.99997 $ & $ 0.999953 $ & $ 0.99995 $ \\ 
+						\hline 
+					\end{tabular} 
+				\end{center}
+
+				\begin{center}
+					\begin{tabular}{|c|c|c|c|c|}
+						\hline
+						pas & minimum exact & minimum approché r = 1 & minimum approché r = 3 & minimum approché r = 6 \\
+						\hline 
+						$0.1$ & $-0.951057$ & $-0.957207$ & $-0.957007$ & $-0.957024$  \\ 
+						\hline 
+						$0.05$ & $-1$ & $-0.998645$ & $-1.00135$ & $-1.00146$\\ 
+						\hline 
+						$0.025$ & $-0.998981$ & $-0.999503$ & $-0.999291$ & $-0.999252$\\ 
+						\hline 
+						$0.0125$ & $-0.999241$ & $-0.999309$ & $-0.999391 $ & $-0.999398$\\ 
+						\hline
+						$0.00625$ & $-0.999807$ & $-0.999836$ & $-0.999764$ & $-0.99977$\\ 
+						\hline 
+						$0.003125$ & $-1$ & $-1.00004$ & $-1.00008$ & $-1.00008$\\ 
+						\hline 
+					\end{tabular} 
+				\end{center}
+
+				\begin{center}
+					\begin{tabular}{|c|c|c|c|c|}
+						\hline
+						pas & maximum exact & maximum approché r = 1 & maximum approché r = 3 & maximum approché r = 6 \\
+						\hline 
+						$0.1$ & $ 0.951057 $ & $ 0.961589 $ & $ 0.97398 $ & $ 0.974181 $ \\ 
+						\hline 
+						$0.05$ & $ 1 $ & $ 0.989663 $ & $ 0.986455 $ & $ 0.986449 $\\ 
+						\hline 
+						$0.025$ & $ 1 $ & $ 1.0004 $ & $ 1.00084 $ & $ 1.00085 $  \\ 
+						\hline 
+						$0.0125$ & $ 0.999241 $ & $ 0.999171 $ & $ 0.999194 $ & $ 0.999196 $\\ 
+						\hline
+						$0.00625$ & $ 0.999868 $ & $ 0.999834 $ & $ 1.00011 $ & $ 1.00011 $ \\ 
+						\hline 
+						$0.003125$ & $ 1 $ & $ 0.99997 $ & $ 0.999953 $ & $ 0.99995 $ \\ 
+						\hline 
+					\end{tabular} 
+				\end{center}
 
 \end{document}
