@@ -3,129 +3,187 @@
 \input{/home/matthieu/Documents/LATEX/preambule_master.tex}
 
 \begin{document}
+	
 	\pagedegarde{Rapport TP Freefem ++}{Nastorg Matthieu \& Philibert Thomas}
 	
-	\section*{Question 1 :}
+		\section*{Question 1 :}
 		
-		On s'intéresse à l'étude par éléments finis, via le langage de programmation \bsc{FREEFEM++}, du problème suivant : 
+			On s'intéresse à l'étude par éléments finis, via le langage de programmation \bsc{FREEFEM++}, du problème suivant : 
+				
+			\[
+				\left\{
+				\begin{array}{ll}
+				- \Delta u = f & \mbox{ si } u \in \Omega \\
+				u = 0 & \mbox{ si } u \in \partial\Omega
+				\end{array}
+				\right.
+			\]
 			
-		\[
-			\left\{
-			\begin{array}{ll}
-			- \Delta u = f & \mbox{ si } u \in \Omega \\
-			u = 0 & \mbox{ si } u \in \partial\Omega
-			\end{array}
-			\right.
-		\]
-		
-		Ici, nous avons choisi la fonction : $x*(1-x)*y*(1-y)$. La résolution de ce problème nous est donné dans les fichiers fournis.
-		
-		On nous demande, d'évaluer l'erreur sur la semi-norme $H^1$ définie par : 
-		\[
-			E_{H^1} = \displaystyle \left(\int_{\Omega} |\nabla u - \nabla u_h|^2 \dx \right)^{\frac{1}{2}}
-		\]
-		
-		On affiche, ci-après, le graphique d'erreur $L^2$ et $H^1$ relatif à la fonction. L'erreur est affichée en fonction du maillage utilisé, qui est de plus en plus fin.
-		
-		\begin{figure}[H]
-			\centering
-			\includegraphics[scale=0.8]{output1/laplace_errors_umfpack.png}
-		\end{figure}
-		
-		Nous allons, ci-après, donner le tableau des minimum et maximum des solutions approchées et exactes en fonction du pas du maillage.
-		
-		
-		\begin{center}
-			\begin{tabular}{|c|c|c|c|c|}
-				\hline
-				pas & minimum approché & minimum exact & maximum approché & maximum exact \\
-				\hline 
-				$0.1$ & $8.6*10^{-63}$ & $0$ & $0.0622894$ & $0.0625$\\ 
-				\hline 
-				$0.05$ & $2.4*10^{-63}$ & $0$ & $0.0624948$ & $0.0625$\\ 
-				\hline 
-				$0.025$ & $6.4*10^{-64}$ & $0$ & $0.0624861$ & $0.0625$  \\ 
-				\hline 
-				$0.0125$ & $1.6*10^{-64}$ & $0$ & $0.0624961$ & $0.0625$\\ 
-				\hline 
-				$0.00625$ & $4.3*10^{-65}$ & $0$ & $0.0624987$ & $0.0625$ \\ 
-				\hline 
-				$0.003125$ & $1.05*10^{-65}$ & $0$ & $0.0624996$ & $0.0625$ \\ 
-				\hline 
-			\end{tabular} 
-		\end{center}
+			Ici, nous avons choisi la fonction : $x*(1-x)*y*(1-y)$. La résolution de ce problème nous est donné dans les fichiers fournis. On précise que $\Omega$ est un domaine carré $(0,1)\times(0,1)$. De plus nous utilisons pour notre résolution les éléments finis $P1$.
 			
-		Nous pouvons constater que les valeurs min et max se rapprochent de la solution exacte plus le maillage s'affine.
+			On nous demande, d'évaluer l'erreur sur la semi-norme $H^1$ définie par : 
+			
+			\[
+				E_{H^1} = \displaystyle \left(\int_{\Omega} |\nabla u - \nabla u_h|^2 \dx \right)^{\frac{1}{2}}
+			\]
+		
+		
+			On affiche, ci-après, le graphique d'erreur $L^2$ et $H^1$ relatif à la résolution approchée du problème. L'erreur est affichée en fonction d'une boucle de maillage de plus en plus fin.
+			
+			\begin{figure}[H]
+				\centering
+				\includegraphics[scale=0.8]{output1/laplace_errors_umfpack.png}
+			\end{figure}
+		
+			On remarque que, plus le maillage s'affine, plus les erreurs diminuent, ce qui est rassurant car nous rajoutons plus de points et donc augmentons notre précision.
+		
+			%AJOUTER POURQUOI H1 EST MOINS PRECIS QUE L2
+		
+			On affiche également ci-dessous le temps de calcul CPU en fonction de la finesse du maillage. On s'attend à ce que la courbe augmente plus le maillage s'affine. Résultat confirmé par le graphique ci-dessous.
+		
+			\begin{figure}[H]
+				\centering
+				\includegraphics[scale=0.8]{output1/laplace_cpu.png}
+			\end{figure}
+		
+			Par suite, nous donnons le tableau des minimums et maximums des solutions approchées et exactes en fonction du pas du maillage. Il est fortement utile de ressortir ces valeurs pour analyser la justesse de notre solution. En effet, on s'attend à ce que, plus le maillage devient fin, plus les maximums et minimums approchés se rapprochent de leurs valeurs exactes respectives. En plus du graphique de diminution de l'erreur, ces dernières nous donnent un second indice quant à la justesse de notre approximation, d'où l'intérêt de savoir les extraire et les analyser. Nous voyons que, dans notre cas, les valeurs approchées tendent bien vers celles exactes.		
+		
+			\begin{center}
+				\begin{tabular}{|c|c|c|c|c|}
+					\hline
+					pas & minimum approché & minimum exact & maximum approché & maximum exact \\
+					\hline 
+					$0.1$ & $8.6*10^{-63}$ & $0$ & $0.0622894$ & $0.0625$\\ 
+					\hline 
+					$0.05$ & $2.4*10^{-63}$ & $0$ & $0.0624948$ & $0.0625$\\ 
+					\hline 
+					$0.025$ & $6.4*10^{-64}$ & $0$ & $0.0624861$ & $0.0625$  \\ 
+					\hline 
+					$0.0125$ & $1.6*10^{-64}$ & $0$ & $0.0624961$ & $0.0625$\\ 
+					\hline 
+					$0.00625$ & $4.3*10^{-65}$ & $0$ & $0.0624987$ & $0.0625$ \\ 
+					\hline 
+					$0.003125$ & $1.05*10^{-65}$ & $0$ & $0.0624996$ & $0.0625$ \\ 
+					\hline 
+				\end{tabular} 
+			\end{center}
+			
 		
 		\section*{Question 2}
 		
+			Nous allons rééditer l'étude faite à la question 1 pour la fonction exacte suivante : $ u(x,y) = x + y$. Pour cela, il nous faut calculer le second membre $f$. 
+			
+			\[
+			- \Delta u = f \Longrightarrow f = 0 
+			\]
+			
+			De plus, il va falloir changer les conditions de bord, que l'on implémentera de la façon suivante : 
+			
+			\begin{itemize}
+				\item Sur $ \Gamma 1 $ : $ y = 0 \Longrightarrow u(x,y) = x$ 
+				\item Sur $ \Gamma 2 $ : $ x = 1 \Longrightarrow u(x,y) = 1 + y $
+				\item Sur $ \Gamma 3 $ : $ y = 1 \Longrightarrow u(x,y) = 1 - x$
+				\item Sur $ \Gamma 4 $ : $ x = 0 \Longrightarrow u(x,y) = y$
+				 
+			\end{itemize}
+			
+			On résoud et on affiche le graphique d'erreur en fonction de la finesse du maillage. 
+			
 			\begin{figure}[H]
-			\centering
-			\includegraphics[scale=0.8]{output2/laplace_errors_umfpack.png}
-		\end{figure}
+				\centering
+				\includegraphics[scale=0.8]{output2/laplace_errors_umfpack.png}
+			\end{figure}
 	
+			On remarque que, quelque soit, le pas de maillage, l'erreur reste constante. Cela provient du fait que les éléments P1 utilisés pour l'étude sont exacts. En effet, la fonction $u(x,y)$ approximée est linéaire et, comme les éléments P1 font des interpolations linéaires entre points du maillage, il est logique qu'ils soient, dans ce cas, exacts.
+			
+			On retrouve les mêmes résultats que la question 1 concernant l'augmentation du temps de calcul CPU. Finalement, on affiche le tableau des minimums et maximums. On remarque que les résultats sont en adéquation avec nos attentes, ce qui permet de justifier la qualité de notre approximation.
+					
+			\begin{center}
+				\begin{tabular}{|c|c|c|c|c|}
+					\hline
+					pas & minimum approché & minimum exact & maximum approché & maximum exact \\
+					\hline 
+					$0.1$ & $1*10^{-31}$ & $0$ & $1.9$ & $2$\\ 
+					\hline 
+					$0.05$ & $5*10^{-32}$ & $0$ & $1.95$ & $2$\\ 
+					\hline 
+					$0.025$ & $2.5*10^{-32}$ & $0$ & $1.975$ & $2$  \\ 
+					\hline 
+					$0.0125$ & $1.25*10^{-32}$ & $0$ & $1.9875$ & $2$\\ 
+					\hline 
+					$0.00625$ & $6.25*10^{-33}$ & $0$ & $1.99375$ & $2$ \\ 
+					\hline 
+					$0.003125$ & $3.125*10^{-33}$ & $0$ & $1.99687$ & $2$ \\ 
+					\hline 
+				\end{tabular} 
+			\end{center}
 	
-	\begin{center}
-		\begin{tabular}{|c|c|c|c|c|}
-			\hline
-			pas & minimum approché & minimum exact & maximum approché & maximum exact \\
-			\hline 
-			$0.1$ & $1*10^{-31}$ & $0$ & $1.9$ & $2$\\ 
-			\hline 
-			$0.05$ & $5*10^{-32}$ & $0$ & $1.95$ & $2$\\ 
-			\hline 
-			$0.025$ & $2.5*10^{-32}$ & $0$ & $1.975$ & $2$  \\ 
-			\hline 
-			$0.0125$ & $1.25*10^{-32}$ & $0$ & $1.9875$ & $2$\\ 
-			\hline 
-			$0.00625$ & $6.25*10^{-33}$ & $0$ & $1.99375$ & $2$ \\ 
-			\hline 
-			$0.003125$ & $3.125*10^{-33}$ & $0$ & $1.99687$ & $2$ \\ 
-			\hline 
-		\end{tabular} 
-	\end{center}
-	
+		
 
 		\section*{Question 3}
+			
+			Nous allons reproduire l'analyse pour la fonction $u(x,y) = \cos(2*\pi*x)*y*(1-y)$ avec les conditions de bord mixtes suivantes : 
+			\begin{itemize}
+				\item $(x,y) = 0$ pour ${y = 0}$ et ${y = 1}$ (Condition de \bsc{Dirichlet})
+				\item $\dfrac{\partial u }{\partial n} = 0$ pour ${x = 0}$ et ${x = 1}$ (Condition de \bsc{Neumann})
+			\end{itemize}
 		
+			Pour commencer, calculons le second membre $f$ : 
+			\[
+			-\Delta u = f \Longrightarrow f = \cos(2*\pi*x)*(2 - 4*\pi^2*y*(y-1))
+ 			\]
+ 			
+ 			Concernant les conditions de bord : 
+ 			\begin{itemize}
+ 				\item \bsc{Dirichlet} : On fait implémente comme depuis le début sur $\Gamma 1$ et $\Gamma 3$
+ 				\item \bsc{Neumann} : On ne fait rien car, dans la formulation variationnelle implémentée, nous avons déjà retiré le terme $\displaystyle \int_{\partial\Omega} \frac{\partial u }{\partial n}.v ds$. Sans précisions sur les termes de bord (comme pour \bsc{Dirichlet} par exemple),\bsc{Freefem++} interprétera cela comme $\dfrac{\partial u}{\partial n} = 0$.
+ 			\end{itemize}
+ 		
+ 			Comme pour les questions 1 et 2, nous affichons le graphique d'erreur. Comme on peut s'y attendre, l'erreur converge bien vers $0$ quand le maillage s'affine. 
+ 			
 			\begin{figure}[H]
 			\centering
 			\includegraphics[scale=0.8]{output3/laplace_errors_umfpack.png}
 			\end{figure}
 		
+			 Finalement le calcul des maximums et minimums nous permettent de bien justifier la pertinence de notre approximation.
+			\begin{center}
+				\begin{tabular}{|c|c|c|c|c|}
+					\hline
+					pas & minimum approché & minimum exact & maximum approché & maximum exact \\
+					\hline 
+					$0.1$ & $-0.248208$ & $-0.25$ & $0.250697$ & $0.25$\\ 
+					\hline 
+					$0.05$ & $-0.250084$ & $-0.25$ & $0.250316$ & $0.25$\\ 
+					\hline 
+					$0.025$ & $-0.249807$ & $-0.25$ & $0.250188$ & $0.25$  \\ 
+					\hline 
+					$0.0125$ & $-0.249946$ & $-0.25$ & $0.250057 $ & $0.25$\\ 
+					\hline 
+					$0.00625$ & $-0.249983$ & $-0.25$ & $0.250023$ & $0.25$ \\ 
+					\hline 
+					$0.003125$ & $-0.249995$ & $-0.25$ & $0.250006$ & $0.25$ \\ 
+					\hline 
+				\end{tabular} 
+			\end{center}
 		
-		\begin{center}
-			\begin{tabular}{|c|c|c|c|c|}
-				\hline
-				pas & minimum approché & minimum exact & maximum approché & maximum exact \\
-				\hline 
-				$0.1$ & $-0.248208$ & $-0.25$ & $0.250697$ & $0.25$\\ 
-				\hline 
-				$0.05$ & $-0.250084$ & $-0.25$ & $0.250316$ & $0.25$\\ 
-				\hline 
-				$0.025$ & $-0.249807$ & $-0.25$ & $0.250188$ & $0.25$  \\ 
-				\hline 
-				$0.0125$ & $-0.249946$ & $-0.25$ & $0.250057 $ & $0.25$\\ 
-				\hline 
-				$0.00625$ & $-0.249983$ & $-0.25$ & $0.250023$ & $0.25$ \\ 
-				\hline 
-				$0.003125$ & $-0.249995$ & $-0.25$ & $0.250006$ & $0.25$ \\ 
-				\hline 
-			\end{tabular} 
-		\end{center}
-
-		\section*{Question 4}
-		
-			\begin{figure}[H]
-				\centering
-				\includegraphics[scale=0.8]{output4/laplace_errors_umfpack.png}
-			\end{figure}
-		\section*{Quesiton 5}
-		
-			\begin{figure}[H]
-				\centering
-				\includegraphics[scale=0.8]{output5/laplace_errors_umfpack.png}
-			\end{figure}
+			\section*{Question 4}
+				
+				Pour les questions 4 et 5, nous allons d'avantage nous focaliser sur les temps de calcul en fonction des méthodes de résolution utilisées.
+				
+							
+				\begin{figure}[H]
+					\centering
+					\includegraphics[scale=0.8]{output4/laplace_errors_umfpack.png}
+				
+				\end{figure}
+			
+			\section*{Quesiton 5}
+			
+				\begin{figure}[H]
+					\centering
+					\includegraphics[scale=0.8]{output5/laplace_errors_umfpack.png}
+				\end{figure}
 		
 		\section*{Question 6}
 
