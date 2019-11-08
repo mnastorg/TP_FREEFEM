@@ -43,7 +43,7 @@
 				\includegraphics[scale=0.6]{output1/laplace_cpu.png}
 			\end{figure}
 		
-			Par suite, nous donnons le tableau des minimums et maximums des solutions approchées et exactes en fonction du pas du maillage. Il est fortement utile de ressortir ces valeurs pour analyser la justesse de notre solution. En effet, on s'attend à ce que plus le maillage devient fin, plus les maximums et minimums approchés se rapprochent de leurs valeurs exactes respectives. En plus du graphique de diminution de l'erreur, ces dernières nous donnent un second indice quant à la justesse de notre approximation, d'où l'intérêt de savoir les extraire et les analyser. Nous voyons que, dans notre cas, les valeurs approchées tendent bien vers celles exactes.		
+			Par suite, nous donnons le tableau des minimums et maximums des solutions approchées et exactes en fonction du pas du maillage. Il est fortement utile de ressortir ces valeurs pour analyser la justesse de notre solution. En effet, on s'attend à ce que plus le maillage s'affine, plus les maximums et minimums approchés se rapprochent de leurs valeurs exactes respectives. En plus du graphique de diminution de l'erreur, ces dernières nous donnent un second indice quant à la justesse de notre approximation, d'où l'intérêt de savoir les extraire et les analyser. Nous voyons que, dans notre cas, les valeurs approchées tendent bien vers celles exactes.		
 		
 			\begin{center}
 				\begin{tabular}{|c|c|c|c|c|}
@@ -229,7 +229,7 @@
 				
 				où $a(x) = diag(1,10^r)$. De plus, nous utiliserons pour second membre $f$ la fonction suivante : $f = 4\pi^2(1+10^r)\sin(2\pi x)\sin(2\pi y)$ dont la solution exacte, dans ce cas, est $ u(x,y) = \sin(2\pi x)\sin(2\pi y)$.
 				
-				Pour commencer, nous allons réécrire la formulation variationnelle correspondant au problème étudié. Soit $v$ une fonction suffisemment régulière, en intégrant on a : 
+				Pour commencer, nous allons réécrire la formulation variationnelle correspondant au problème étudié. Soit $v$ une fonction suffisamment régulière, en intégrant on a : 
 				
 				\begin{align*}
 				\Longrightarrow &\displaystyle - \int_{\Omega} div(a(x) \nabla u).v dx - \int_{\Omega} f.v dx = 0 \\
